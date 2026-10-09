@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "build": "mkdir -p www && cp index.html www/index.html",
     "sync": "npx cap sync android",
-    "assets": "npx capacitor-assets generate --android",
+    "assets": "npx capacitor-assets generate",
     "apk": "cd android && ./gradlew assembleDebug"
   },
   "dependencies": {
