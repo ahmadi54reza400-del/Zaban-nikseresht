@@ -1,0 +1,6 @@
+{
+  "appId": "com.englishadventure.app",
+  "appName": "English Adventure",
+  "webDir": "www",
+  "android": { "allowMixedContent": false }
+}

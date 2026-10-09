@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ماجراجویی انگلیسی – English Adventure</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EAF4FF;--card:#fff;--ink:#16294D;--mut:#5B6B8A;--sun:#FFC93C;--coral:#E8505B;--mint:#12A594;--sky:#3D7BFF;--line:#D3E1F5;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0F1B33;--card:#18284A;--ink:#EEF3FF;--mut:#A9B8D6;--line:#2C4070}}
+*{box-sizing:border-box}html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Vazirmatn,Tahoma,sans-serif;font-size:17px;line-height:1.7}
+.en{font-family:'Baloo 2',Vazirmatn,sans-serif;direction:ltr;unicode-bidi:isolate}
+#app{max-width:760px;margin:0 auto;padding:16px 14px 100px}
+h1,h2,h3{margin:.2em 0}
+.card{background:var(--card);border:2px solid var(--line);border-radius:22px;padding:16px;margin:12px 0}
+.btn{font:inherit;font-weight:800;border:0;border-radius:16px;padding:12px 18px;background:var(--sky);color:#fff;cursor:pointer;min-height:48px}
+.btn.sun{background:var(--sun);color:#16294D}.btn.mint{background:var(--mint)}.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--line)}
+.btn:focus-visible,.opt:focus-visible,.tab:focus-visible,.chip:focus-visible{outline:4px solid var(--coral);outline-offset:2px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.hero{background:linear-gradient(135deg,var(--sky),var(--mint));color:#fff;border-radius:28px;padding:22px;margin:8px 0}
+.hero h1{font-size:30px}.hero .en{font-size:22px;opacity:.95}
+.big{font-size:44px;line-height:1.2}.mut{color:var(--mut);font-size:14px}
+.opt{font:inherit;font-weight:800;background:var(--card);color:var(--ink);border:3px solid var(--line);border-radius:18px;padding:14px;min-height:64px;cursor:pointer;font-size:22px}
+.opt.ok{background:#C9F2E3;border-color:var(--mint);color:#064}.opt.no{background:#FFD9DC;border-color:var(--coral);color:#7a1020}
+.bar{height:14px;background:var(--line);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--sun)}
+.tabs{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:2px solid var(--line);display:flex;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px))}
+.tab{font:inherit;background:none;border:0;color:var(--mut);font-size:13px;padding:6px 8px;border-radius:12px;cursor:pointer;min-width:56px}.tab b{display:block;font-size:22px}.tab.on{color:var(--sky);font-weight:800}
+.wc{display:flex;align-items:center;gap:12px;cursor:pointer;width:100%;text-align:start;font:inherit;color:inherit;background:var(--card);border:2px solid var(--line);border-radius:18px;padding:10px 14px;margin:8px 0}
+.wc .e{font-size:40px}.wc .en{font-size:24px;font-weight:800}
+.chip{font:inherit;font-weight:800;font-size:20px;background:var(--sun);color:#16294D;border:0;border-radius:14px;padding:8px 14px;margin:4px;cursor:pointer;direction:ltr}
+.ans{min-height:60px;border:3px dashed var(--line);border-radius:16px;padding:8px;direction:ltr;display:flex;flex-wrap:wrap}
+.msg{padding:10px 14px;border-radius:16px;margin:8px 0;max-width:88%}.me{background:var(--sky);color:#fff;margin-inline-start:auto}.ai{background:var(--card);border:2px solid var(--line)}
+input,select,textarea{font:inherit;padding:12px;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--ink);width:100%}
+.stars{font-size:46px;letter-spacing:6px}@media(prefers-reduced-motion:no-preference){.pop{animation:pop .5s}@keyframes pop{from{transform:scale(.6)}to{transform:scale(1)}}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<nav class="tabs" id="nav" aria-label="منوی اصلی"></nav>
+<script>
+// ---------- Data ----------
+const L=[
+["Animals","حیوانات","🐾",["cat|گربه|🐱|This is a cat.","dog|سگ|🐶|I have a dog.","bird|پرنده|🐦|The bird can fly.","fish|ماهی|🐟|The fish is small.","rabbit|خرگوش|🐰|The rabbit is white."]],
+["Colors","رنگ‌ها","🎨",["red|قرمز|🟥|I like red.","blue|آبی|🟦|The sky is blue.","green|سبز|🟩|The tree is green.","yellow|زرد|🟨|The sun is yellow.","black|مشکی|⬛|My bag is black."]],
+["Numbers","اعداد","🔢",["one|یک|1️⃣|I have one book.","two|دو|2️⃣|I have two eyes.","three|سه|3️⃣|I see three birds.","four|چهار|4️⃣|The table has four legs.","five|پنج|5️⃣|I have five fingers."]],
+["Fruits","میوه‌ها","🍎",["apple|سیب|🍎|I eat an apple.","banana|موز|🍌|The banana is yellow.","orange|پرتقال|🍊|I like orange juice.","grape|انگور|🍇|The grapes are sweet.","lemon|لیمو|🍋|The lemon is sour."]],
+["Family","خانواده","👪",["mother|مادر|👩|My mother is kind.","father|پدر|👨|My father is tall.","brother|برادر|👦|I have a brother.","sister|خواهر|👧|She is my sister.","baby|نوزاد|👶|The baby is sleeping."]],
+["School","مدرسه","🎒",["book|کتاب|📘|This is my book.","pen|خودکار|🖊️|I have a pen.","bag|کیف|🎒|My bag is new.","teacher|معلم|🧑‍🏫|She is my teacher.","pencil|مداد|✏️|I need a pencil."]],
+["Body","اعضای بدن","🖐️",["eye|چشم|👁️|I see with my eye.","ear|گوش|👂|I hear with my ear.","nose|بینی|👃|This is my nose.","mouth|دهان|👄|Open your mouth.","hand|دست|✋|Raise your hand."]],
+["Greetings","سلام و احوالپرسی","👋",["hello|سلام|👋|Hello, my friend.","thanks|ممنون|🙏|Thanks for your help.","sorry|ببخشید|😔|I am sorry.","please|لطفاً|🤲|Please sit down.","welcome|خوش آمدی|🎉|Welcome to our class."]]];
+const W=[];L.forEach((l,i)=>l[3].forEach(s=>{const[e,f,m,x]=s.split("|");W.push({e,f,m,x,l:i})}));
+const ABC="abcdefghijklmnopqrstuvwxyz";
+// ---------- State (saved on this device) ----------
+let S;try{S=JSON.parse(localStorage.getItem("ea1"))}catch(e){}
+S=S||{p:null,done:{},w:{},t:0,days:[],goal:15,pin:null,xp:0,sc:[]};
+const save=()=>{try{localStorage.setItem("ea1",JSON.stringify(S))}catch(e){}};
+const today=()=>new Date().toISOString().slice(0,10);
+setInterval(()=>{if(!document.hidden&&S.p){S.t+=10;if(!S.days.includes(today()))S.days.push(today());save()}},10000);
+let V="home",X={},Q=null,T=[],parentOK=false;
+const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const shuf=a=>a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(x=>x[1]);
+function say(t,slow){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="en-US";u.rate=slow?.5:.9;speechSynthesis.speak(u)}catch(e){}}
+const canSpeak="speechSynthesis"in window;
+function rec(w,ok){const o=S.w[w]||{b:0},b=ok?Math.min(5,o.b+1):0;S.w[w]={b,d:Date.now()+[0,1,2,4,8,16][b]*864e5};save()}
+function go(v,x){V=v;X=x||{};Q=null;render();scrollTo(0,0)}
+function pool(){let p=W.filter(w=>S.done[w.l]);if(p.length<6)p=W.filter(w=>w.l<2);return shuf(p.sort((a,b)=>((S.w[a.e]||{}).d||0)-((S.w[b.e]||{}).d||0)).slice(0,12))}
+const others=(w,k,n)=>shuf(W.filter(o=>o.e!==w.e&&o[k]!==w[k])).slice(0,n).map(o=>o[k]);
+// ---------- Question builders ----------
+const B={
+pic:w=>({h:`<div class="big en">${w.e}</div>`,say:w.e,o:shuf([w.m,...others(w,"m",3)]),a:w.m,w:w.e,emoji:1}),
+fa:w=>({h:`<div class="big en">${w.e}</div><div class="mut">معنی فارسی چیست؟</div>`,say:w.e,o:shuf([w.f,...others(w,"f",3)]),a:w.f,w:w.e}),
+ear:w=>({h:`<div class="big">🔊</div><div class="mut">گوش کن و کلمه را انتخاب کن</div>`,say:w.e,auto:1,o:shuf([w.e,...others(w,"e",3)]),a:w.e,w:w.e,en:1}),
+miss:w=>{const i=Math.floor(Math.random()*w.e.length),c=w.e[i];return{h:`<div class="big">${w.m}</div><div class="big en">${w.e.slice(0,i)}_${w.e.slice(i+1)}</div><div class="mut">حرف گمشده کدام است؟</div>`,say:w.e,o:shuf([c,...shuf([...ABC].filter(x=>x!==c)).slice(0,3)]),a:c,w:w.e,en:1}},
+arr:w=>({k:"arr",h:`<div class="mut">جمله را بچین: ${esc(w.f)}</div>`,s:w.x.split(" "),a:w.x,w:w.e,say:w.x})};
+const GAMES=[["pic","🖼️","پیدا کردن تصویر"],["fa","🔗","اتصال کلمه و معنی"],["ear","🎧","گوش کن و انتخاب کن"],["miss","🔤","حروف گمشده"],["arr","🧩","جمله‌سازی"]];
+// ---------- Quiz runner ----------
+function quiz(qs,title,end){Q={qs,i:0,sc:0,wrong:[],title,end,done:0,pick:[]};drawQ()}
+function drawQ(){const q=Q.qs[Q.i];if(!q)return finish();
+ const prog=`<div class="bar" role="progressbar" aria-valuenow="${Q.i}" aria-valuemax="${Q.qs.length}"><i style="width:${Q.i/Q.qs.length*100}%"></i></div><p class="mut">${esc(Q.title)} – سؤال ${Q.i+1} از ${Q.qs.length}</p>`;
+ let body;
+ if(q.k==="arr"){Q.pick=[];body=`<div class="card">${q.h}<div class="row">${canSpeak?`<button class="btn ghost" onclick="say(Q.qs[Q.i].say)">🔊 بشنو</button>`:""}</div><div class="ans" id="ans" aria-live="polite"></div><div id="bank" style="direction:ltr">${shuf(q.s.map((t,i)=>[t,i])).map(([t,i])=>`<button class="chip" data-i="${i}" onclick="addW(this)">${esc(t)}</button>`).join("")}</div><div class="row"><button class="btn ghost" onclick="drawQ()">پاک کن</button><button class="btn" onclick="chkArr()">بررسی</button></div><div id="fb"></div></div>`}
+ else body=`<div class="card" style="text-align:center">${q.h}${canSpeak&&q.say?`<div class="row" style="justify-content:center"><button class="btn ghost" onclick="say(Q.qs[Q.i].say)">🔊 عادی</button><button class="btn ghost" onclick="say(Q.qs[Q.i].say,1)">🐢 آهسته</button></div>`:""}</div><div class="grid" style="grid-template-columns:1fr 1fr">${q.o.map((o,i)=>`<button class="opt ${q.emoji||q.en?"":""}${q.emoji?"":q.en?"en":""}" style="${q.emoji?"font-size:40px":""}" onclick="ans(${i})">${esc(o)}</button>`).join("")}</div><div id="fb"></div>`;
+ $("#app").innerHTML=`<button class="btn ghost" onclick="go('${V==="lesson"?"lessons":"games"}')">✕ خروج</button>`+prog+body;
+ if(q.auto)say(q.say)}
+function addW(b){const a=$("#ans"),c=b.cloneNode(true);c.onclick=null;c.disabled=true;a.appendChild(c);Q.pick.push(b.textContent);b.style.visibility="hidden"}
+function chkArr(){const q=Q.qs[Q.i],ok=Q.pick.join(" ")===q.a;Q.pick=[];fb(ok,q.a,q.w)}
+function ans(i){const q=Q.qs[Q.i];if(Q.done)return;const bs=document.querySelectorAll(".opt");bs.forEach((b,j)=>{if(q.o[j]===q.a)b.classList.add("ok");else if(j===i)b.classList.add("no");b.disabled=true});fb(q.o[i]===q.a,q.a,q.w)}
+function fb(ok,a,w){if(Q.done)return;Q.done=1;if(ok)Q.sc++;else Q.wrong.push(w);rec(w,ok);
+ $("#fb").innerHTML=`<div class="card pop" style="border-color:${ok?"var(--mint)":"var(--coral)"}"><b>${ok?["آفرین! 🎉","عالی بود! ⭐","درسته! 👏"][Q.sc%3]:"اشکالی نداره، دوباره امتحان می‌کنیم 💪"}</b>${ok?"":`<div>پاسخ درست: <span class="en">${esc(a)}</span></div>`}<button class="btn sun" onclick="Q.i++;Q.done=0;drawQ()">بعدی</button></div>`}
+function finish(){const r=Q.sc/Q.qs.length;Q.end?Q.end(Q.sc,Q.qs.length,Q.wrong):0}
+function result(sc,n,wrong,title,again,next){S.sc.push(Math.round(sc/n*100));S.xp+=sc*10;save();const st=sc/n>=.9?3:sc/n>=.7?2:sc/n>=.4?1:0;
+ $("#app").innerHTML=`<div class="card pop" style="text-align:center"><h2>${esc(title)}</h2><div class="stars" aria-label="${st} ستاره">${"⭐".repeat(st)}${"☆".repeat(3-st)}</div><p>امتیاز: <b>${sc}</b> از ${n}</p>${wrong.length?`<p class="mut">برای مرور: <span class="en">${[...new Set(wrong)].join(", ")}</span><br>این کلمه‌ها بعداً دوباره می‌آیند.</p>`:"<p>هیچ اشتباهی نداشتی! 🏆</p>"}<div class="row" style="justify-content:center"><button class="btn" onclick="${again}">دوباره</button>${next?`<button class="btn mint" onclick="${next}">درس بعدی</button>`:""}<button class="btn ghost" onclick="go('home')">خانه</button></div></div>`}
+// ---------- Views ----------
+function nav(){const t=[["home","🏠","خانه"],["lessons","📚","درس‌ها"],["games","🎮","بازی"],["tutor","💬","معلم"],["dash","📊","پیشرفت"]];$("#nav").innerHTML=S.p?t.map(([v,i,n])=>`<button class="tab ${V===v||(v==="lessons"&&V==="lesson")?"on":""}" onclick="go('${v}')"><b>${i}</b>${n}</button>`).join(""):""}
+function render(){nav();const f={home,lessons,lesson,games,tutor,dash,parent}[V];$("#app").innerHTML=S.p?f():welcome()}
+function welcome(){return`<div class="hero"><h1>ماجراجویی انگلیسی</h1><div class="en">English Adventure</div><p>انگلیسی یاد بگیر، بازی کن، صحبت کن و پیشرفت کن!</p></div><div class="card"><h2>پروفایل بساز</h2><p class="mut">فقط یک نام مستعار لازم است. اطلاعات روی همین دستگاه می‌ماند.</p><label for="nm">نام مستعار</label><input id="nm" maxlength="20" autocomplete="off"><p>گروه سنی</p><div class="row">${["7–10","11–13","14–15"].map((a,i)=>`<label class="btn ghost"><input type="radio" name="ag" value="${a}" ${i?"":"checked"} style="width:auto"> ${a} سال</label>`).join("")}</div><p id="er" style="color:var(--coral)" role="alert"></p><button class="btn sun" onclick="mk()">شروع ماجراجویی 🚀</button></div>`}
+function mk(){const n=$("#nm").value.trim();if(n.length<2){$("#er").textContent="لطفاً نام مستعار حداقل ۲ حرفی بنویس.";return}S.p={n,a:document.querySelector("[name=ag]:checked").value};save();go("home")}
+function nextL(){const i=L.findIndex((_,i)=>!S.done[i]);return i<0?0:i}
+function home(){const d=Object.keys(S.done).length,n=nextL();return`<div class="hero"><h1>سلام ${esc(S.p.n)}! 👋</h1><div class="en">Let's learn English!</div><div class="bar" style="margin-top:10px"><i style="width:${d/L.length*100}%"></i></div><p>${d} از ${L.length} درس کامل شده</p><button class="btn sun" onclick="go('lesson',{i:${n}})">${d?"ادامه درس":"شروع یادگیری"}: <span class="en">${L[n][0]}</span> ${L[n][2]}</button></div>
+<div class="grid"><button class="btn mint" onclick="go('games')">🎮 بازی‌ها</button><button class="btn" onclick="go('tutor')">💬 تمرین مکالمه</button><button class="btn ghost" onclick="go('dash')">📊 پیشرفت من</button><button class="btn ghost" onclick="go('parent')">🔒 بخش والدین</button></div>
+<div class="card"><h3>مسیر یادگیری</h3><p class="mut">هر درس: کلمه‌های تصویری ← صدا ← آزمون ← ستاره. داستان‌ها، گرامر و آزمون تعیین سطح هنوز در این نسخه نیستند.</p></div>`}
+function lessons(){return`<h2>درس‌ها</h2>`+L.map((l,i)=>`<button class="wc" onclick="go('lesson',{i:${i}})"><span class="e">${l[2]}</span><span><span class="en">${l[0]}</span> – ${l[1]}<br><span class="mut">${S.done[i]?"✅ کامل شد – بهترین امتیاز "+S.done[i]+"٪":"۵ کلمه جدید"}</span></span></button>`).join("")}
+function lesson(){const i=X.i,l=L[i],ws=W.filter(w=>w.l===i);return`<button class="btn ghost" onclick="go('lessons')">← درس‌ها</button><div class="card"><h2>${l[2]} <span class="en">${l[0]}</span> – ${l[1]}</h2><p>هدف: یاد گرفتن ۵ کلمه درباره «${l[1]}». روی هر کارت بزن تا تلفظش را بشنوی.</p></div>${ws.map(w=>`<button class="wc" onclick="say('${w.e}')"><span class="e">${w.m}</span><span><span class="en">${w.e}</span> = ${w.f}<br><span class="en mut">${w.x}</span></span></button>`).join("")}<div class="row">${canSpeak?`<button class="btn ghost" onclick="say('${ws.map(w=>w.e).join(", ")}',1)">🐢 همه را آهسته بشنو</button>`:`<span class="mut">مرورگر شما پخش صدا ندارد؛ کلمه‌ها را بخوان و تکرار کن.</span>`}</div><button class="btn sun" style="margin-top:12px" onclick="startL(${i})">شروع آزمون ✍️</button>`}
+function startL(i){const ws=shuf(W.filter(w=>w.l===i)),ks=["pic","fa","ear","miss","pic"],qs=ws.map((w,j)=>B[ks[j]](w));qs.push(B.arr(ws[0]));quiz(qs,L[i][0],(sc,n,wr)=>{const p=Math.round(sc/n*100);S.done[i]=Math.max(S.done[i]||0,p);save();result(sc,n,wr,"درس تمام شد! 🎉",`startL(${i})`,i<L.length-1?`go('lesson',{i:${i+1}})`:"")})}
+function games(){const p=pool(),due=Object.values(S.w).filter(o=>o.d<Date.now()).length;return`<h2>بازی‌ها</h2><p class="mut">کلمه‌های درس‌های تمام‌شده${Object.keys(S.done).length?"":" (هنوز درسی تمام نشده؛ از دو درس اول استفاده می‌شود)"}</p>${due?`<div class="card">🔁 ${due} کلمه آماده مرور است؛ در بازی‌ها اولویت دارند.</div>`:""}${GAMES.map(g=>`<button class="wc" onclick="playG('${g[0]}','${g[2]}')"><span class="e">${g[1]}</span><b>${g[2]}</b></button>`).join("")}`}
+function playG(k,t){const qs=pool().slice(0,8).map(B[k]);quiz(qs,t,(sc,n,wr)=>result(sc,n,wr,t,`playG('${k}','${t}')`,""))}
+// AI tutor via Claude (only if the viewer grants it)
+let SMP;try{claude.use('sample').then(x=>{SMP=x;if(V==='tutor')render()}).catch(()=>{SMP=null})}catch(e){SMP=null}
+function tutor(){if(SMP===undefined)return`<div class="card">در حال آماده‌سازی…</div>`;
+ if(!SMP)return`<h2>معلم هوشمند</h2><div class="card">⚠️ اتصال به هوش مصنوعی در این نمایش فعال نیست، پس این بخش کار نمی‌کند. می‌توانید با بازی‌ها و درس‌ها تمرین کنید.</div>`;
+ return`<h2>معلم هوشمند 💬</h2><p class="mut">برای ایمنی، اسم کامل، آدرس یا شماره تلفن ننویس. گفتگوی تو برای پاسخ‌دادن به Claude فرستاده می‌شود.</p><div id="chat">${T.length?T.map(m=>`<div class="msg ${m.r==="u"?"me":"ai"} ${m.r==="u"?"en":""}">${esc(m.t)}</div>`).join(""):`<div class="msg ai en">Hello! What is your name?</div>`}</div><div class="row"><input id="ti" class="en" placeholder="Type in English…" onkeydown="if(event.key==='Enter')tsend()"><button class="btn sun" onclick="tsend()">ارسال</button></div>`}
+async function tsend(){const i=$("#ti"),t=i.value.trim();if(!t)return;T.push({r:"u",t});i.value="";render();
+ const lv=Object.keys(S.done).length,hist=T.map(m=>(m.r==="u"?"Student: ":"Teacher: ")+m.t).join("\n");
+ const p=`You are a kind English teacher for a child (age group ${S.p.a}) who speaks Persian; lessons finished: ${lv} of 8 (beginner). Rules: use very short, simple English; first line is your English reply, then a short Persian hint line when helpful; gently correct mistakes and show the right sentence; ask one easy follow-up question; always encourage; stay on English learning; never ask for personal information (real name, address, phone, school) and tell the student not to share it. Transcript starts with Teacher: Hello! What is your name?\n${hist}\nTeacher:`;
+ try{const r=await SMP(p,{cache:false});T.push({r:"a",t:r.text})}catch(e){T.push({r:"a",t:e&&e.code==="not_granted"?"اجازه‌ی اتصال داده نشد.":"مشکلی پیش آمد. کمی بعد دوباره امتحان کن."})}render();setTimeout(()=>{const i=$("#ti");i&&i.focus()},50)}
+function streak(){let s=0,d=new Date();while(S.days.includes(d.toISOString().slice(0,10))){s++;d.setDate(d.getDate()-1)}return s}
+function stats(){const ws=Object.entries(S.w),avg=S.sc.length?Math.round(S.sc.reduce((a,b)=>a+b)/S.sc.length):0;return{d:Object.keys(S.done).length,learned:ws.filter(([,o])=>o.b>=1).length,weak:ws.filter(([,o])=>o.b===0).map(x=>x[0]),avg,days:S.days.length,min:Math.round(S.t/60),st:streak()}}
+function dash(){const s=stats(),b=[[s.d>=1,"🌟","اولین درس"],[s.d>=4,"🏅","۴ درس"],[s.d>=8,"🏆","همه درس‌ها"],[s.st>=3,"🔥","۳ روز پشت‌هم"],[s.learned>=20,"📖","۲۰ کلمه"]];
+ const sug=s.weak.length?`مرور کلمه‌های سخت: <span class="en">${s.weak.slice(0,5).join(", ")}</span>`:`درس بعدی: <span class="en">${L[nextL()][0]}</span>`;
+ return`<h2>پیشرفت ${esc(S.p.n)}</h2><div class="grid">${[["📚",s.d+"/8","درس کامل"],["🔤",s.learned,"کلمه یادگرفته"],["🎯",s.avg+"٪","میانگین نمره"],["📅",s.days,"روز فعالیت"],["⏱️",s.min,"دقیقه یادگیری"],["🔥",s.st,"روز پشت‌هم"]].map(c=>`<div class="card" style="text-align:center;margin:0"><div class="big">${c[0]}</div><b style="font-size:26px">${c[1]}</b><div class="mut">${c[2]}</div></div>`).join("")}</div><div class="card"><h3>پیشنهاد</h3>${sug}<br><button class="btn mint" style="margin-top:8px" onclick="go('games')">برو بازی کن</button></div><div class="card"><h3>نشان‌ها</h3><div class="row">${b.map(x=>`<span style="opacity:${x[0]?1:.35};text-align:center"><span class="big">${x[1]}</span><br><span class="mut">${x[2]}</span></span>`).join("")}</div><p class="mut">امتیاز: ${S.xp} ⭐</p></div>`}
+function parent(){if(!S.pin&&!parentOK)return`<h2>بخش والدین 🔒</h2><div class="card"><p>یک رمز ۴ رقمی بسازید. توجه: این رمز فقط روی همین مرورگر ذخیره می‌شود و امنیت سطح حساب کاربری ندارد.</p><input id="pn" type="password" inputmode="numeric" maxlength="4" placeholder="۴ رقم" style="max-width:160px"><p id="er" style="color:var(--coral)" role="alert"></p><button class="btn" onclick="pin()">ثبت رمز</button></div>`;
+ if(!parentOK)return`<h2>بخش والدین 🔒</h2><div class="card"><input id="pn" type="password" inputmode="numeric" maxlength="4" placeholder="رمز" style="max-width:160px"><p id="er" style="color:var(--coral)" role="alert"></p><button class="btn" onclick="pin()">ورود</button></div>`;
+ const s=stats();return`<h2>بخش والدین</h2><div class="card"><h3>گزارش ${esc(S.p.n)} (${S.p.a} سال)</h3><p>درس کامل: ${s.d}/8 • کلمه: ${s.learned} • میانگین: ${s.avg}٪ • زمان: ${s.min} دقیقه • روز فعالیت: ${s.days}</p>${Object.keys(S.done).map(i=>`<div><span class="en">${L[i][0]}</span>: ${S.done[i]}٪</div>`).join("")||"<p class='mut'>هنوز درسی تمام نشده.</p>"}${s.weak.length?`<p>نیازمند مرور: <span class="en">${s.weak.join(", ")}</span></p>`:""}</div><div class="card"><h3>هدف روزانه</h3><select id="gl" onchange="S.goal=+this.value;save()">${[10,15,20].map(m=>`<option ${S.goal===m?"selected":""} value="${m}">${m} دقیقه</option>`).join("")}</select><p class="mut">امروز: ${Math.min(S.goal,Math.round(S.t/60))} دقیقه از کل زمان ثبت‌شده؛ هدف فعلاً فقط نمایش داده می‌شود.</p></div><div class="card"><h3>حریم خصوصی</h3><p class="mut">اطلاعات فقط روی همین دستگاه ذخیره می‌شود. صدای کودک ضبط نمی‌شود. فقط متن گفتگو با معلم هوشمند برای پاسخ‌گویی فرستاده می‌شود و پروفایلی عمومی وجود ندارد.</p><button class="btn ghost" onclick="if(confirm('همه اطلاعات پاک شود؟')){localStorage.removeItem('ea1');location.reload()}">🗑️ پاک کردن همه اطلاعات</button></div><button class="btn ghost" onclick="parentOK=false;go('home')">خروج از بخش والدین</button>`}
+function pin(){const v=$("#pn").value;if(!/^\d{4}$/.test(v)){$("#er").textContent="رمز باید ۴ رقم باشد.";return}if(!S.pin){S.pin=v;save();parentOK=true}else if(S.pin===v)parentOK=true;else{$("#er").textContent="رمز اشتباه است.";return}render()}
+render();
+</script>
+</body>
+</html>
